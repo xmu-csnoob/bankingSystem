@@ -26,7 +26,7 @@
 
 <script>
 import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
-import Logo from "./Logo.vue";
+import Logo from "../Logo.vue";
 
 export default {
   name: 'LoginForm',
@@ -52,8 +52,8 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           alert('Login successful');
-          // TODO: Implement your login logic here
-          // After login logic, set isSubmitting to false
+          // TODO: Implement your forms logic here
+          // After forms logic, set isSubmitting to false
         } else {
           alert('Please fill in the form');
           this.isSubmitting = false;
@@ -76,7 +76,6 @@ export default {
   height: 100vh; /* 使登录容器占满整个视口高度 */
   padding: 0 20px; /* 防止内容触碰到视窗边缘 */
 }
-
 .login-form {
   flex-grow: 1; /* 允许login-form根据父容器大小进行伸展 */
   max-width: 30%; /* 设置一个最大宽度 */
@@ -122,6 +121,7 @@ export default {
   border: none; /* 去除边框 */
   background: none; /* 去除背景 */
 }
+
 
 /* 可以考虑添加一些媒体查询来调整小屏幕上的表现 */
 @media (max-width: 600px) {
