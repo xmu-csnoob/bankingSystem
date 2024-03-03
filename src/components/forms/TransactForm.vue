@@ -42,24 +42,26 @@ export default {
   methods: {
     ontransact() {
       this.isSubmitting = true;
+
       const transactionData = {
         accountNumber: this.transactForm.accountNumber,
         amount: this.transactForm.amount,
       };
 
+      // TODO: ADD HEADER
       axios.post('http://localhost:8080/user/transact', transactionData)
-          .then(response => {
-            // 处理响应数据
-            console.log('Registration successful', response.data);
-            // 这里可以添加更多注册成功后的操作，比如跳转到登录页面或显示成功消息
-            this.isSubmitting = false;
-          })
-          .catch(error => {
-            // 处理错误
-            console.error('Registration failed', error);
-            this.isSubmitting = false;
-            // 这里可以添加错误处理逻辑，比如显示错误消息
-          });
+        .then(response => {
+          // 处理响应数据
+          console.log('Transaction Succesful', response.data);
+          // 这里可以添加更多注册成功后的操作，比如跳转到登录页面或显示成功消息
+          this.isSubmitting = false;
+        })
+        .catch(error => {
+          // 处理错误
+          console.error('Transaction failed', error);
+          this.isSubmitting = false;
+          // 这里可以添加错误处理逻辑，比如显示错误消息
+        });
     }
   }
 };
