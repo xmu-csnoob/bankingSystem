@@ -14,6 +14,12 @@
         <el-input type="password" placeholder="password" v-model="loginForm.password" autocomplete="off"></el-input>
       </el-form-item>
       <div class="form-actions">
+        <img :src="captchaUrl" alt=""/>
+      </div>
+      <div class="form-actions">
+        <el-input v-model="captcha" style="width: 20%"></el-input>
+      </div>
+      <div class="form-actions">
         <el-button type="primary" :loading="isSubmitting" class="login-button" @click="onLogin">Login</el-button>
       </div>
       <div class="form-actions">
@@ -27,7 +33,7 @@
 <script>
 import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
 import Logo from "../Logo.vue";
-
+import axios from "axios";
 export default {
   name: 'LoginForm',
   components: {
@@ -43,11 +49,18 @@ export default {
         username: '',
         password: ''
       },
-      isSubmitting: false
+      hasCaptcha:false,
+      isSubmitting: false,
+      captchaUrl: "",
+      captcha: ""
     };
   },
   methods: {
     onLogin() {
+      if(!this.hasCaptcha){
+        this.initCaptcha()
+        return
+      }
       this.isSubmitting = true;
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
@@ -63,8 +76,26 @@ export default {
     },
     goToRegister() {
       this.$router.push({ name: 'register' }); // 假设你的注册路由命名为 'register'
-    }
-  }
+    },
+    initCaptcha(){
+      console.log("testing1")
+      axios.get('/api/user/getCaptcha')
+          .then(response => {
+            // 处理响应数据
+            console.log('Captcha Received', response.data);
+            let captchaBody = response.data.data
+            console.log(captchaBody)
+            this.captchaUrl = captchaBody.image
+          })
+          .catch(error => {
+            // 处理错误
+            console.error('Registration failed', error);
+            this.isSubmitting = false;
+            // 这里可以添加错误处理逻辑，比如显示错误消息
+          });
+    },
+  },
+
 };
 </script>
 
@@ -121,7 +152,6 @@ export default {
   border: none; /* 去除边框 */
   background: none; /* 去除背景 */
 }
-
 
 /* 可以考虑添加一些媒体查询来调整小屏幕上的表现 */
 @media (max-width: 600px) {
