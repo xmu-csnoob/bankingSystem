@@ -2,10 +2,10 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" class="login-form" @submit.native.prevent="onLogin">
       <div class="form-item-logo">
-        <Logo size="200px"/>
+        <Logo size="200px" />
       </div>
       <div class="brand">
-        <el-form-item label="Nebula" prop="brand"/>
+        <el-form-item label="Nebula" prop="brand" />
       </div>
       <el-form-item label="" prop="username">
         <el-input placeholder="username" v-model="loginForm.username" autocomplete="off"></el-input>
@@ -29,11 +29,10 @@
   </div>
 </template>
 
-
 <script>
-import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
-import Logo from "../Logo.vue";
-import axios from "axios";
+import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus'
+import Logo from '../Logo.vue'
+import axios from 'axios'
 export default {
   name: 'LoginForm',
   components: {
@@ -43,60 +42,60 @@ export default {
     ElInput,
     ElButton
   },
-  data() {
+  data () {
     return {
       loginForm: {
         username: '',
         password: ''
       },
-      hasCaptcha:false,
+      hasCaptcha: false,
       isSubmitting: false,
-      captchaUrl: "",
-      captcha: ""
-    };
+      captchaUrl: '',
+      captcha: ''
+    }
   },
   methods: {
-    onLogin() {
-      if(!this.hasCaptcha){
+    onLogin () {
+      if (!this.hasCaptcha) {
         this.initCaptcha()
         return
       }
-      this.isSubmitting = true;
+      this.isSubmitting = true
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          alert('Login successful');
+          alert('Login successful')
           // TODO: Implement your forms logic here
           // After forms logic, set isSubmitting to false
         } else {
-          alert('Please fill in the form');
-          this.isSubmitting = false;
-          return false;
+          alert('Please fill in the form')
+          this.isSubmitting = false
+          return false
         }
-      });
+      })
     },
-    goToRegister() {
-      this.$router.push({ name: 'register' }); // 假设你的注册路由命名为 'register'
+    goToRegister () {
+      this.$router.push({ name: 'register' }) // 假设你的注册路由命名为 'register'
     },
-    initCaptcha(){
-      console.log("testing1")
+    initCaptcha () {
+      console.log('testing1')
       axios.get('/api/user/getCaptcha')
-          .then(response => {
-            // 处理响应数据
-            console.log('Captcha Received', response.data);
-            let captchaBody = response.data.data
-            console.log(captchaBody)
-            this.captchaUrl = captchaBody.image
-          })
-          .catch(error => {
-            // 处理错误
-            console.error('Registration failed', error);
-            this.isSubmitting = false;
-            // 这里可以添加错误处理逻辑，比如显示错误消息
-          });
-    },
-  },
+        .then(response => {
+          // 处理响应数据
+          console.log('Captcha Received', response.data)
+          const captchaBody = response.data.data
+          console.log(captchaBody)
+          this.captchaUrl = captchaBody.image
+        })
+        .catch(error => {
+          // 处理错误
+          console.error('Registration failed', error)
+          this.isSubmitting = false
+          // 这里可以添加错误处理逻辑，比如显示错误消息
+        })
+    }
+  }
 
-};
+}
 </script>
 
 <style scoped>

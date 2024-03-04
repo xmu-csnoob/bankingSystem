@@ -5,7 +5,7 @@
         <UserInfo id="user-info" :user="user" @open-user-details="openUserDetailsDialog"/>
         <el-dialog
             title="个人信息"
-            :visible.sync="isDialogVisible"
+            v-model:visible="isDialogVisible"
             width="30%"
             :before-close="handleClose">
           <p>姓名: {{ user.name }}</p>
@@ -22,38 +22,37 @@
 
 <script>
 
-
-import UserInfo from "../components/cards/UserInfo.vue";
-import BankCards from "../components/cards/BankCards.vue";
+import UserInfo from '../components/cards/UserInfo.vue'
+import BankCards from '../components/cards/BankCards.vue'
 
 export default {
   components: {
     UserInfo,
     BankCards
   },
-  data() {
+  data () {
     return {
       user: {
         name: 'John Doe',
         email: 'john.doe@example.com',
         bankCards: [
           { id: 1, bankName: 'Bank A', cardNumber: 'XXXX XXXX XXXX 1234' },
-          { id: 2, bankName: 'Bank B', cardNumber: 'XXXX XXXX XXXX 5678' },
+          { id: 2, bankName: 'Bank B', cardNumber: 'XXXX XXXX XXXX 5678' }
           // 更多银行卡数据...
-        ],
+        ]
       },
-      dialogVisible: false, // 控制对话框的显示
-    };
+      dialogVisible: false // 控制对话框的显示
+    }
   },
   methods: {
-    handleShowUserDetails() {
-      this.isDialogVisible = true; // 当点击按钮时显示对话框
+    handleShowUserDetails () {
+      this.isDialogVisible = true // 当点击按钮时显示对话框
     },
-    handleClose(done) {
-      this.isDialogVisible = false; // 关闭对话框的方法
-    },
-  },
-};
+    handleClose (done) {
+      this.isDialogVisible = false // 关闭对话框的方法
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -68,6 +67,9 @@ export default {
   box-sizing: border-box;
   display: flex;
   justify-content: center; /* 水平居中内部容器 */
+}
+.el-header{
+  height: auto;
 }
 
 .content-container {

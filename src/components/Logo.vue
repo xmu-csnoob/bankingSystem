@@ -10,14 +10,14 @@ export default {
   props: {
     size: {
       type: String,
-      default: '100px', // 默认大小，如果没有传递 size 属性
+      default: '100px' // 默认大小，如果没有传递 size 属性
     },
     altText: {
       type: String,
       default: 'Logo'
     }
   }
-};
+}
 </script>
 
 <style>
