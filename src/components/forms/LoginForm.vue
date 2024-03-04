@@ -4,9 +4,7 @@
       <div class="form-item-logo">
         <Logo size="200px" />
       </div>
-      <div class="brand">
-        <el-form-item label="Nebula" prop="brand" />
-      </div>
+      <div class="brand">Nebula</div>
       <el-form-item label="" prop="username">
         <el-input placeholder="username" v-model="loginForm.username" autocomplete="off"></el-input>
       </el-form-item>
@@ -14,10 +12,10 @@
         <el-input type="password" placeholder="password" v-model="loginForm.password" autocomplete="off"></el-input>
       </el-form-item>
       <div class="form-actions">
-        <img :src="captchaUrl" alt=""/>
+        <img :src="captchaUrl" alt="Captcha" @click="initCaptcha" style="cursor: pointer;" title="点击刷新验证码"/>
       </div>
       <div class="form-actions">
-        <el-input v-model="captcha" style="width: 20%"></el-input>
+        <el-input placeholder="请输入验证码" v-model="captcha" style="width: 20%"></el-input>
       </div>
       <div class="form-actions">
         <el-button type="primary" :loading="isSubmitting" class="login-button" @click="onLogin">Login</el-button>
@@ -30,9 +28,10 @@
 </template>
 
 <script>
-import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus'
-import Logo from '../Logo.vue'
-import axios from 'axios'
+import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
+import Logo from '../Logo.vue';
+import axios from 'axios';
+
 export default {
   name: 'LoginForm',
   components: {
@@ -42,7 +41,7 @@ export default {
     ElInput,
     ElButton
   },
-  data () {
+  data() {
     return {
       loginForm: {
         username: '',
@@ -51,50 +50,60 @@ export default {
       hasCaptcha: false,
       isSubmitting: false,
       captchaUrl: '',
-      captcha: ''
-    }
+      captcha: '',
+      captchaKey: ''
+    };
+  },
+  mounted() {
+    this.initCaptcha();
   },
   methods: {
-    onLogin () {
-      if (!this.hasCaptcha) {
-        this.initCaptcha()
-        return
-      }
-      this.isSubmitting = true
+    onLogin() {
+      this.isSubmitting = true;
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          alert('Login successful')
-          // TODO: Implement your forms logic here
-          // After forms logic, set isSubmitting to false
+          axios({
+            method: 'post',
+            url: '/apis/user/login',
+            params:{
+              "username":this.loginForm.username,
+              "password":this.loginForm.password,
+              "key":this.captchaKey
+            }
+          }).then(response=>{
+            console.log(response)
+          })
+
+          this.isSubmitting = false; // 确保在登录逻辑完成后设置isSubmitting为false
         } else {
-          alert('Please fill in the form')
-          this.isSubmitting = false
-          return false
+          this.isSubmitting = false; // 如果表单验证失败，确保能再次提交
+          alert('Please fill in the form correctly.');
         }
+      });
+    },
+    goToRegister() {
+      console.log("register")
+      this.$router.push({ name: 'Register' }); // 假设你的注册路由命名为 'register'
+    },
+    initCaptcha() {
+      axios({
+        method: 'get',
+        url: '/apis/user/getCaptcha',
+        responseType: 'blob', // 重要：以arraybuffer形式接收响应体
+        headers: {
+          'Accept': 'image/jpeg' // 明确告诉服务器您期望的响应内容类型
+        },
       })
-    },
-    goToRegister () {
-      this.$router.push({ name: 'register' }) // 假设你的注册路由命名为 'register'
-    },
-    initCaptcha () {
-      console.log('testing1')
-      axios.get('/api/user/getCaptcha')
-        .then(response => {
-          // 处理响应数据
-          console.log('Captcha Received', response.data)
-          const captchaBody = response.data.data
-          console.log(captchaBody)
-          this.captchaUrl = captchaBody.image
-        })
-        .catch(error => {
-          // 处理错误
-          console.error('Registration failed', error)
-          this.isSubmitting = false
-          // 这里可以添加错误处理逻辑，比如显示错误消息
-        })
+          .then(response => {
+            // 从响应头获取Captcha-Key
+            const blob = new Blob([response.data], { type: 'image/jpeg' });
+            this.captchaUrl = URL.createObjectURL(blob);
+          })
+          .catch(error => {
+            console.error('Failed to fetch captcha', error);
+          });
     }
   }
-
 }
 </script>
 

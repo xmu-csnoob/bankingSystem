@@ -57,7 +57,7 @@ export default {
         password: this.registerForm.password // 密码应该是加密过的
       }
 
-      axios.post('http://localhost:8080/user/register', registrationData)
+      axios.post('/apis/user/register', registrationData)
         .then(response => {
           // 处理响应数据
           console.log('Registration successful', response.data)

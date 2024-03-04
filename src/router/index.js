@@ -7,10 +7,10 @@ const routes = [
   {
     path: '/',
     name: '',
-    redirect: '/home'
+    redirect: '/login'
   },
   {
-    path: '/forms',
+    path: '/login',
     name: 'Login',
     component: LoginView
   },
@@ -19,12 +19,6 @@ const routes = [
     name: 'Register',
     component: RegisterView
   },
-  {
-    path: '/home',
-    name: 'Home',
-    component: HomeView
-  },
-
   {
     path: '/bank',
     name: 'Bank',
