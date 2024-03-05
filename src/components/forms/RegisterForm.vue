@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
-import Logo from "../Logo.vue";
-import axios from 'axios';
+import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus'
+import Logo from '../Logo.vue'
+import axios from 'axios'
 export default {
   name: 'RegisterForm',
   components: {
@@ -36,7 +36,7 @@ export default {
     ElInput,
     ElButton
   },
-  data() {
+  data () {
     return {
       registerForm: {
         cardNumber: '',
@@ -45,34 +45,34 @@ export default {
         password: '' // 注意：这里的密码将在客户端以明文形式收集，然后在提交前应该进行MD5加密
       },
       isSubmitting: false
-    };
+    }
   },
   methods: {
-    onRegister() {
-      this.isSubmitting = true;
+    onRegister () {
+      this.isSubmitting = true
       const registrationData = {
         cardNumber: this.registerForm.cardNumber,
         securityCode: this.registerForm.securityCode,
         username: this.registerForm.username,
         password: this.registerForm.password // 密码应该是加密过的
-      };
+      }
 
-      axios.post('http://localhost:8080/user/register', registrationData)
-          .then(response => {
-            // 处理响应数据
-            console.log('Registration successful', response.data);
-            // 这里可以添加更多注册成功后的操作，比如跳转到登录页面或显示成功消息
-            this.isSubmitting = false;
-          })
-          .catch(error => {
-            // 处理错误
-            console.error('Registration failed', error);
-            this.isSubmitting = false;
-            // 这里可以添加错误处理逻辑，比如显示错误消息
-          });
+      axios.post('/apis/user/register', registrationData)
+        .then(response => {
+          // 处理响应数据
+          console.log('Registration successful', response.data)
+          // 这里可以添加更多注册成功后的操作，比如跳转到登录页面或显示成功消息
+          this.isSubmitting = false
+        })
+        .catch(error => {
+          // 处理错误
+          console.error('Registration failed', error)
+          this.isSubmitting = false
+          // 这里可以添加错误处理逻辑，比如显示错误消息
+        })
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -120,4 +120,3 @@ export default {
   }
 }
 </style>
-

@@ -15,10 +15,10 @@ export default {
   props: {
     bankCards: {
       type: Array,
-      required: true,
-    },
-  },
-};
+      required: true
+    }
+  }
+}
 </script>
 
 <style scoped>

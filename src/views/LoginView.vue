@@ -1,6 +1,6 @@
 <script setup>
-import LoginForm from "../components/forms/LoginForm.vue";
-import Logo from "../components/Logo.vue";
+import LoginForm from '../components/forms/LoginForm.vue'
+import Logo from '../components/Logo.vue'
 </script>
 
 <template>
